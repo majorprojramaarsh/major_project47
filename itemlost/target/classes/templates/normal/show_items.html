@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+	th:replace="normal/base::layout(~{::section})">
+<head>
+<meta charset="UTF-8" />
+<title>Show items</title>
+</head>
+<body>
+<section>
+		<div class="card mr-3 ml-3">
+		<div class="card-body">
+		<h1 class="text-center">Listed Items</h1>
+		
+		<div class="table-responsive">
+	          <table class="table table-hover">
+			  <thead class="thead-dark">
+			    <tr>
+			      <th scope="col">#ID</th>
+			      <th scope="col">Name</th>
+			      <th scope="col">Main Category</th>
+			      <th scope="col">Sub Category</th>
+			      <th scope="col">Action</th>
+			    </tr>
+			  </thead>
+			  <tbody>
+			  <tr th:each="i : ${items}">
+					
+			    <th scope="row" th:text="${'KSSUSER'+i.item_id}">1</th>
+			    
+			    <td>
+					
+				<img src="" class="my_profile_picture" th:src="@{'/img/'+${i.item_image}}" alt="profile photo" />
+			    
+			    <a href="#" th:href="@{'/user/'+${i.item_id}+'/item'}">
+					
+			    <span th:text="${i.item_name}"></span>
+			    
+			    </a>
+			    
+			    </td>
+			    
+			    <td th:text="${i.main_category}">Phone</td>
+			    
+			    <td th:text="${i.sub_category}">Realme</td>
+			    
+			    <td>
+					
+					<button href="" th:onclick="|deleteItem(${i.item_id})|" class="btn btn-danger btn-sm">Delete</button>
+					
+					<form method="post" th:action="@{'/user/update-item/'+${i.item_id}}" class="mt-2">
+						
+					<button type="submit" class="btn btn-primary btn-sm">Update</button>
+					
+					</form>
+					
+				</td>
+				
+			    </tr>
+			   
+			  
+			  </tbody>
+            </table>
+            </div>
+            <!--  pagination part -->
+
+            <nav aria-label="Page navigation example">
+				
+            <ul class="pagination">
+				
+            <li th:if="${currentPage != 0}" class="page-item"><a th:href="@{'/user/show-items/'+${currentPage-1}}" class="page-link" href="#">Previous</a></li>
+            
+            <li th:classappend="${currentPage==i-1?'active':''}" th:each="i : ${#numbers.sequence(1,totalPages)}" class="page-item"><a th:href="@{'/user/show-items/'+${i-1}}" class="page-link" href="#"><span th:text="${i}"></span></a></li>
+            
+            <li th:if="${currentPage+1 != totalPages}" class="page-item"><a th:href="@{'/user/show-items/'+${currentPage+1}}" class="page-link" href="#">Next</a></li>
+            
+            </ul>
+            </nav>
+
+		</div>
+		 <script>
+        $(document).ready(() => {
+          $(".item").removeClass("active");
+          $("#items-link").addClass("active");
+        });
+         </script>
+</section>
+</body>
+</html>
